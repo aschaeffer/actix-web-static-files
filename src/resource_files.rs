@@ -11,7 +11,7 @@ use static_files::Resource;
 use std::{
     collections::HashMap,
     ops::Deref,
-    rc::Rc,
+    sync::Arc,
     task::{Context, Poll},
 };
 
@@ -40,7 +40,7 @@ use std::{
 pub struct ResourceFiles {
     not_resolve_defaults: bool,
     not_found_resolves_to: Option<String>,
-    inner: Rc<ResourceFilesInner>,
+    inner: Arc<ResourceFilesInner>,
 }
 
 pub struct ResourceFilesInner {
@@ -57,7 +57,7 @@ impl ResourceFiles {
             files,
         };
         Self {
-            inner: Rc::new(inner),
+            inner: Arc::new(inner),
             not_resolve_defaults: false,
             not_found_resolves_to: None,
         }
@@ -127,7 +127,7 @@ impl ServiceFactory for ResourceFiles {
 pub struct ResourceFilesService {
     resolve_defaults: bool,
     not_found_resolves_to: Option<String>,
-    inner: Rc<ResourceFilesInner>,
+    inner: Arc<ResourceFilesInner>,
 }
 
 impl Deref for ResourceFilesService {
